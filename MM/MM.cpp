@@ -8,7 +8,11 @@
 
 using namespace std;
 
-void displayHouse(int location, Room rooms[]);
+template <size_t rows, size_t cols>
+void displayHouse(int plocation, Room(&rooms)[rows][cols]);
+
+const int HOUSE_I = 4;
+const int HOUSE_J = 4;
 
 int main()
 {
@@ -27,9 +31,8 @@ int main()
 	Suspect suspects[6];
 	Suspect killer;
 	int killerIndex = rand() % 6;
-	suspects[0] = killer;
 
-	for(int i = 1; i < 6; i++)
+	for(int i = 0; i < 6; i++)
 	{
 		if (i == killerIndex)
 		{
@@ -42,17 +45,26 @@ int main()
 		}
 	}
 
-	Room rooms[16];
+	Room rooms[HOUSE_I][HOUSE_J];
 	Room killed(type);
-	rooms[5] = killed;
+	int bodyLocI = rand() % HOUSE_I;
+	int bodyLocJ = rand() % HOUSE_J;
 
-	for(int i=0; i<5; i++){
-		Room newR(i, type, suspects);
-		rooms[i]=newR;}
-
-	for(int i=6; i<16; i++){
-		Room newR(i, type, suspects);
-		rooms[i]=newR;}
+	for (int i = 0; i < HOUSE_I; i++)
+	{
+		for (int j = 0; j < HOUSE_J; j++)
+		{
+			if (i == bodyLocI && j == bodyLocJ)
+			{
+				rooms[i][j] = killed;
+			}
+			else 
+			{
+				Room newR(i * HOUSE_I + j, type, suspects);
+				rooms[i][j] = newR;
+			}
+		}
+	}
 
 	cout<<"HI! You are in a mansion. Someone died here. It was murder."<<endl;
 	cout<<"You should determine who it was. Good luck!"<<endl;
@@ -71,7 +83,12 @@ int main()
 		int sus;
 		cin>>in;
 
-		if (in=="Suspect"){
+		for (int i = 0; i < in.length(); i++)
+		{
+			in[i] = tolower(in[i]);
+		}
+
+		if (in == "suspect"){
 			cin>>sus;
 			if (sus<0 || sus>6){
 				cout<<"Try again."<<endl;}
@@ -79,17 +96,17 @@ int main()
 			suspects[sus-1].displaySuspect();
 			displayHouse(you.getLocation(), rooms);}}
 
-		if (in=="Identify"){
+		if (in=="identify"){
 			cout<<"Who is the murderer? ";
 			cin>>in;
 			you.identifyKiller(in);}
 
-		if (in=="Check"){
+		if (in=="check"){
 			cin>>sus;
-			you.changeLocation(sus, rooms[sus]);
+			you.changeLocation(sus, rooms[sus / HOUSE_I][sus % HOUSE_J]);
 		
 			cout<<endl;
-			rooms[sus].searched=true;
+			rooms[sus / HOUSE_I][sus % HOUSE_J].searched=true;
 			//system("pause");
 			//std::cin.get();
 			displayHouse(you.getLocation(), rooms);}
@@ -98,12 +115,16 @@ int main()
 	return 0;
 }
 
-void displayHouse(int plocation, Room rooms[])
+template <size_t rows, size_t cols>
+void displayHouse(int plocation, Room(&rooms)[rows][cols])
 {
-	for (int i=0; i<16; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		if (i%4==0) cout<<endl;
-		rooms[i].displayRoom(plocation);
-		if (i==15) cout<<endl;
+		for (int j = 0; j < 4; j++)
+		{
+			rooms[i][j].displayRoom(plocation);
+		}
+		cout << endl;
 	}
+	cout << endl;
 }
