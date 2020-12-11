@@ -15,8 +15,9 @@ public:
 	Player(int type);
 	void changeLocation(int location, Room room);
 	int getLocation()  const;
-	void identifyKiller(string killer);
 	int getPlayerType() const;
+	void identifyKiller(string killer);
+	
 	bool complete;
 };
 #endif

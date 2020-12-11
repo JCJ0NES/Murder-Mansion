@@ -10,9 +10,10 @@ class Evidence
 public:
 	Evidence();
 	Evidence(int seed, Suspect suspects[]);
-	string fingerPrints;
-	bool isWeapon;
-	bool hasBlood;
 	void displayEvidence() const;
+	
+	string fingerPrints;
+	bool hasBlood;
+	bool isWeapon;
 };
 #endif

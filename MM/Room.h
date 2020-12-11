@@ -9,20 +9,21 @@ class Room
 {
 private:
 	int bananas;
-	int milkBones;
 	int catNip;
 	bool hasEvidence;
-	int size;
 	int location;
+	int milkBones;
+	int size;
 	int type;
 public:
 	Room();
 	Room(int type);
 	Room(int location, int type, Suspect suspects[]);
+	void displayRoom(int pLocation) const;
 	int getLocation()  const;
 	void search();
-	bool searched;
+
 	Evidence evidence;
-	void displayRoom(int pLocation) const;
+	bool searched;
 };
 #endif

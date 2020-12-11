@@ -6,26 +6,26 @@ using namespace std;
 class Suspect
 {
 private:
-	string name;
-	int height;
-	int weight;
-	int hairColor;
-	string fingerPrints;
-	int suspicionLevel;
 	int attractiveness;
+	string fingerPrints;
+	int hairColor;
+	int height;
 	bool isKiller;
+	string name;
+	int suspicionLevel;
+	int weight;
 public:
 	Suspect();
-	Suspect(int seed);
-	string getName()  const;
-	int getHeight()  const;
-	int getWeight()  const;
-	int getHairColor()  const;
-	string getFingerPrints()  const;
-	int getSuspicionLevel()  const;
-	int getAttractiveness()  const;
-	void setSuspicionLevel(int num);
-	bool getKiller()  const;
+	Suspect(int notKiller);
 	void displaySuspect() const;
+	int getAttractiveness()  const;
+	string getFingerPrints()  const;
+	int getHairColor()  const;
+	int getHeight()  const;
+	bool getKiller()  const;
+	string getName()  const;
+	int getSuspicionLevel()  const;
+	int getWeight()  const;
+	void setSuspicionLevel(int num);
 };
 #endif
