@@ -86,7 +86,7 @@ int main()
 		int sus;
 		cin >> in;
 
-		for (int i = 0; i < in.length(); i++)
+		for (unsigned int i = 0; i < in.length(); i++)
 		{
 			in[i] = tolower(in[i]);
 		}
