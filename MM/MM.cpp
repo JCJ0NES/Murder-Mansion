@@ -1,10 +1,11 @@
+#include <cmath>
+#include <iostream>
+#include <limits>
+#include "curses.h"
 #include "Evidence.h"
 #include "Player.h"
 #include "Room.h"
 #include "Suspect.h"
-#include <iostream>
-#include <limits>
-#include <cmath>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ int main()
 {
 	time_t t;
 	int type; //Determines whether player is a monkey, corgi, or calico
+	initscr();
 
 	srand((unsigned)time(&t));
 	cout << "What are you?\n1 - Monkey\n2 - Corgi\n3 - Calico\n ";
@@ -78,7 +80,10 @@ int main()
 	cout << "P is your current location. X means you have searched that room." << endl;
 	displayHouse(you.getLocation(), rooms);
 
-	while(!you.complete){
+	while(!you.complete)
+	{
+		refresh();
+		erase();
 		cout << "Enter \"Check\" and a room number to go to and search a room." << endl;
 		cout << "Enter \"Suspect\" and a number 1 through 6 to show a suspects info." << endl;
 		cout << "Enter \"Identify\" to identify the murderer." << endl;
@@ -91,26 +96,37 @@ int main()
 			in[i] = tolower(in[i]);
 		}
 
-		if (in == "suspect"){
+		if (in == "suspect")
+		{
 			cin >> sus;
-			if (sus<0 || sus>6){
-				cout << "Try again." << endl;}
-			else{
+			if (sus<0 || sus>6)
+			{
+				cout << "Try again." << endl;
+			}
+			else
+			{
 			suspects[sus-1].displaySuspect();
-			displayHouse(you.getLocation(), rooms);}}
+			displayHouse(you.getLocation(), rooms);
+			}
+		}
 
-		if (in == "identify"){
+		if (in == "identify")
+		{
 			cout << "Who is the murderer? ";
 			cin >> in;
-			you.identifyKiller(in);}
+			you.identifyKiller(in);
+		}
 
-		if (in == "check"){
+		if (in == "check")
+		{
 			cin >> sus;
+			sus = sus % (HOUSE_I * HOUSE_J); //lazy fix for out of bounds. will do better later.
 			you.changeLocation(sus, rooms[sus / HOUSE_I][sus % HOUSE_J]);
 		
 			cout << endl;
 			rooms[sus / HOUSE_I][sus % HOUSE_J].searched=true;
-			displayHouse(you.getLocation(), rooms);}
+			displayHouse(you.getLocation(), rooms);
+		}
 	}
 
 	return 0;
